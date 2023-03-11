@@ -5,10 +5,12 @@
     "onbording": "bin/onbording.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "(cd lambdas/onboardingHandler && npm run build:onboarding)",
     "watch": "tsc -w",
-    "test": "jest",
-    "cdk": "cdk"
+    "test:unit": "(cd lambdas/onboardingHandler && npm run test:onboarding:unit)",
+    "test:acceptance": "(cd lambdas/onboardingHandler && npm run test:onboarding:acceptance)",
+    "cdk": "cdk",
+    "start": "sam local start-api"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

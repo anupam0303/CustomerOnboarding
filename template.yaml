@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    Observations microservice
+
+Globals:
+    Function:
+        Timeout: 24
+
+Resources:
+    onboardingSqsQueue:
+      Type: AWS::SQS::Queue
+    CreateCustomerOnboarding:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: lambdas/onboardingHandler
+            Handler: index.handler
+            Runtime: nodejs16.x
+            Environment:
+              Variables:
+                queueUrl: !GetAtt onboardingSqsQueue.queueUrl
+            Events:
+                PostCustomer:
+                    Type: Api
+                    Properties:
+                        Path: /onboarding
+                        Method: post

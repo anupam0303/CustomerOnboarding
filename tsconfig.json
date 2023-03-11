@@ -2,9 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
-    "lib": [
-      "es2020"
-    ],
+    "lib": ["DOM", "es2018"],
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
@@ -19,12 +17,13 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": "./",
     "typeRoots": [
       "./node_modules/@types"
     ]
   },
-  "exclude": [
-    "node_modules",
-    "cdk.out"
-  ]
+  "include": ["src/**/*.ts", "tests"],
+  "exclude": ["node_modules", "cdk.out", ".aws-sam/", "jest.config.ts", "**/**/*.config.ts"]
 }
