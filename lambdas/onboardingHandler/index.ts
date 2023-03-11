@@ -37,7 +37,7 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
             }
             try {
                 const result = await sqs.sendMessage(params);
-                console.log("Message successfully sent: " + result);
+                console.log("Message successfully sent: " + JSON.stringify(result));
 
             } catch(err) {
                 console.log("Error: could not send message to the queue: " + err);
