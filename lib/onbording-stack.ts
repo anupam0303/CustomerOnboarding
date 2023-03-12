@@ -11,11 +11,13 @@ export class OnbordingStack extends cdk.Stack {
 
     // Create SQS Queue
     const queue = new sqs.Queue(this, 'OnbordingQueue', {
+      queueName: "OnbordingQueue",
       visibilityTimeout: cdk.Duration.seconds(30)
     });
 
     // Create Lambda Function
     const customerOnboardingLambda = new lambda.Function(this, "customerOnboardingFunction", {
+      functionName: "customerOnboardingFunction",
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: "index.handler",
       memorySize: 128,

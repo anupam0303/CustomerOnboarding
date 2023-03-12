@@ -40,7 +40,7 @@ defineFeature(feature, (test: DefineScenarioFunctionWithAliases) => {
         let responseCode: number;
         let responseMessage: string;
         given("user makes valid customer onboarding request", () => {
-            validRequestBody = {customerName: "test", adminUsers: ["test@test.com"], tier: "Pro", region: "Frankfurt"};
+            validRequestBody = {customerName: "test", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt"};
         });
         when("user posts onboarding request", async () => {
             try {

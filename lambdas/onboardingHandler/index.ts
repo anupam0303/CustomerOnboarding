@@ -10,44 +10,54 @@ const customerOnboardingDataSchema = yup.object({
     customerName: yup.string().defined().required(),
     adminUsers: yup.array().of(yup.string().email()).required(),
     tier: yup.string().oneOf(["Pro"]).required(),
-    region: yup.string().oneOf(["Northern Virginia", "Frankfurt" ]).required()
+    customerRegion: yup.string().oneOf(["Northern Virginia", "Frankfurt"]).required()
 });
 
-const QUEUE_URL = process.env.queueUrl;
-const sqs = new AWS.SQS({region: "eu-central-1"});
+const QUEUE_URL = process.env.queueUrl || "https://sqs.us-east-1.amazonaws.com/231401767112/OnbordingStack-OnbordingQueue329D4FA9-99rTiLmiYSFG";
+AWS.config.update({ region: "us-east-1" });
+const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
 
 export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
-    console.log("Queue URL: " , QUEUE_URL);
+    console.log("Queue URL: ", QUEUE_URL);
+    let messageBody: object;
     if (!event.body) {
         return sendResponse(400, { message: "error: No body is present in event" });
     } else {
+        console.log('typeof (event.body)', typeof (event.body));
+        if (typeof (event.body) !== "object") {
+            messageBody = JSON.parse(event.body);
+        }
+        else {
+            messageBody = event.body;
+        }
         try {
-            console.log("onboarding data: ", event.body);
-            if ( typeof(event.body) !== "object") {
-                await customerOnboardingDataSchema.validate(JSON.parse(event.body));
-            }
-            else {
-                await customerOnboardingDataSchema.validate(event.body);
-            }
+            console.log("onboarding data: ", JSON.stringify(messageBody));
+            await customerOnboardingDataSchema.validate(messageBody);
             console.log("Validation success, putting into queue");
             const params = {
-                MessageBody: event.body,
-                QueueUrl: QUEUE_URL,
-                MessageGroupId: "customerOnboarding"
-            }
+              DelaySeconds: 10,
+              MessageBody: JSON.stringify(messageBody),
+              QueueUrl: QUEUE_URL,
+              //MessageGroupId: "customerOnboarding",
+            };
             try {
-                const result = await sqs.sendMessage(params);
-                console.log("Message successfully sent: " + JSON.stringify(result));
+                console.log(
+                    "Sending message to queue: " + JSON.stringify(params)
+                );
+                const data = await sqs.sendMessage(params).promise();
+                console.log(
+                  "Message successfully sent: " + JSON.stringify(data)
+                );
 
-            } catch(err) {
+            } catch (err) {
                 console.log("Error: could not send message to the queue: " + err);
                 return sendResponse(500, { message: "error: Sorry, couldn't take request, please try again" });
             }
-            
+
             return sendResponse(200, { message: "success: Request taken" });
         } catch (err) {
             console.log(err);
-            return sendResponse(400, { message: 'error: Invalid object schema , expected {customerName: "name", adminUsers: ["test@test.com"], tier: "Pro", region: "Frankfurt" }' });
+            return sendResponse(400, { message: 'error: Invalid object schema , expected {customerName: "name", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt" }' });
         }
     }
 }
