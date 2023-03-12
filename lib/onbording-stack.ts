@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import { LambdaIntegration, DomainName, BasePathMapping, RestApi, Period } from "aws-cdk-lib/aws-apigateway";
+import { LambdaIntegration, RestApi, Period } from "aws-cdk-lib/aws-apigateway";
 import * as path from "path";
 
 export class OnbordingStack extends cdk.Stack {

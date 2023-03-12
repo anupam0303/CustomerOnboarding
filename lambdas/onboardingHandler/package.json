@@ -11,6 +11,7 @@
   "author": "Anupam Gupta",
   "license": "ISC",
   "dependencies": {
+    "aws-xray-sdk": "^3.4.1",
     "yup": "^1.0.2"
   },
   "devDependencies": {
