@@ -25,7 +25,7 @@ export const getSQSClient = () => {
 };
 
 export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> => {
-    console.log("Queue URL: ", QUEUE_URL);
+    console.log("Got Queue URL: ", QUEUE_URL);
     let messageBody: object;
     if (!event.body) {
         return sendResponse(400, { message: "error: No body is present in event" });
@@ -61,7 +61,7 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
                 console.log("Error: could not send message to the queue: " + err);
                 return sendResponse(500, { message: "error: Sorry, couldn't take request, please try again" });
             }
-            return sendResponse(200, { message: "success: Request taken, messageId: " + messageId });
+            return sendResponse(200, { message: "success: Request taken with messageId: " + messageId });
         } catch (err) {
             console.log(err);
             return sendResponse(400, { message: 'error: Invalid object schema , expected {customerName: "name", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt" }' });

@@ -24,6 +24,6 @@
       "./node_modules/@types"
     ]
   },
-  "include": ["src/**/*.ts", "tests"],
-  "exclude": ["node_modules", "cdk.out", ".aws-sam/", "jest.config.ts", "**/**/*.config.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "cdk.out", ".aws-sam/", "jest.config.ts", "**/**/*.config.ts", "tests/**/*.ts"]
 }

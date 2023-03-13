@@ -23,6 +23,6 @@
         "paths": {},
         "types": ["jest", "node"]
     },
-    "include": ["src/**/*.ts", "tests"],
-    "exclude": ["node_modules", "cdk.out", ".aws-sam/", "*.config.ts"]
+    "include": ["**/*.ts"],
+    "exclude": ["node_modules", "cdk.out", ".aws-sam/", "*.config.ts", "tests"]
 }

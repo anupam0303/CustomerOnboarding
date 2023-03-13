@@ -1,6 +1,5 @@
 import * as lambdaFun from "../../index";
 import { APIGatewayProxyEventV2 } from "aws-lambda";
-import * as AWS from "aws-sdk";
 
 describe("customerOnboardingTests", () => {
     let getSQSClientSpy;
