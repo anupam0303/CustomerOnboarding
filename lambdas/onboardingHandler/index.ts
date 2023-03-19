@@ -11,8 +11,13 @@ interface JSONObject {
 const customerOnboardingDataSchema = yup.object({
     customerName: yup.string().defined().required(),
     adminUsers: yup.array().of(yup.string().email()).required(),
+    productName: yup.string().oneOf(["WxHorizon"]).required(),
     tier: yup.string().oneOf(["Pro"]).required(),
-    customerRegion: yup.string().oneOf(["Northern Virginia", "Frankfurt"]).required()
+    customerRegion: yup.string().oneOf(["Northern Virginia", "Frankfurt"]).required(),
+    devices: yup.array().of(yup.object({
+        deviceType: yup.string().oneOf(["Ground Cast", "Temp Cast"]),
+        deviceSerial: yup.string()
+    }))
 });
 
 const QUEUE_URL = process.env.queueUrl || "https://sqs.us-east-1.amazonaws.com/231401767112/OnbordingQueue";
@@ -45,7 +50,6 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
               DelaySeconds: 10,
               MessageBody: JSON.stringify(messageBody),
               QueueUrl: QUEUE_URL,
-              //MessageGroupId: "customerOnboarding",
             };
             let messageId: string;
             try {

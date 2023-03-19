@@ -40,7 +40,7 @@ defineFeature(feature, (test: DefineScenarioFunctionWithAliases) => {
         let responseCode: number;
         let responseMessage: string;
         given("user makes valid customer onboarding request", () => {
-            validRequestBody = {customerName: "test", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt"};
+            validRequestBody = {customerName: "test", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt", productName: "WxHorizon",  devices: [{deviceType: "Ground Cast", deviceSerial: "GC-12345"}]};
         });
         when("user posts onboarding request", async () => {
             try {
@@ -50,7 +50,7 @@ defineFeature(feature, (test: DefineScenarioFunctionWithAliases) => {
                 responseMessage = response.data;
             } catch (err) {
                 if (isAxiosError(err)) {
-                    console.log(err);
+                    console.log(err.response?.data);
                     responseCode = err.response?.status as number;
                     responseMessage = err.response?.data as string;
                 }

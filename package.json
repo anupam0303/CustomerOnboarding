@@ -10,7 +10,7 @@
     "test:unit": "(cd lambdas/onboardingHandler && npm run test:onboarding:unit)",
     "test:acceptance": "(cd lambdas/onboardingHandler && npm run test:onboarding:acceptance)",
     "cdk": "cdk",
-    "start": "sam local start-api"
+    "start": "sam local start-api --profile anupam-testing"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

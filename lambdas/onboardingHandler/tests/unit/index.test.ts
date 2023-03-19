@@ -63,7 +63,15 @@ describe("customerOnboardingTests", () => {
         expect(JSON.parse(JSON.stringify(result)).body).toContain('error: Invalid object schema');
     });
     it("If body contains valid customerOnboarding data then respond with 200 success ", async () => {
-        const event: APIGatewayProxyEventV2 = { body: { customerName: "test", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt" } } as any;
+        const event: APIGatewayProxyEventV2 = { body: { customerName: "test", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt", productName: "WxHorizon" } } as any;
+        mockGetSQSClient(["sendMessage"]);
+        const result = await lambdaFun.handler(event);
+        expect(getSQSClientSpy).toHaveBeenCalled();
+        expect(JSON.parse(JSON.stringify(result)).statusCode).toBe(200);
+        expect(JSON.parse(JSON.stringify(result)).body).toContain('success');
+    });
+    it("If body contains valid customerOnboarding data with devices then respond with 200 success ", async () => {
+        const event: APIGatewayProxyEventV2 = { body: { customerName: "test", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt" , productName: "WxHorizon",  devices: [{deviceType: "Ground Cast", deviceSerial: "GC-12345"}]} } as any;
         mockGetSQSClient(["sendMessage"]);
         const result = await lambdaFun.handler(event);
         expect(getSQSClientSpy).toHaveBeenCalled();
