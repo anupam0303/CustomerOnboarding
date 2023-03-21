@@ -47,9 +47,9 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
             await customerOnboardingDataSchema.validate(messageBody);
             console.log("Validation success, putting into queue");
             const params = {
-              DelaySeconds: 10,
-              MessageBody: JSON.stringify(messageBody),
-              QueueUrl: QUEUE_URL,
+                DelaySeconds: 10,
+                MessageBody: JSON.stringify(messageBody),
+                QueueUrl: QUEUE_URL,
             };
             let messageId: string;
             try {
@@ -58,9 +58,9 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
                 );
                 const data = await getSQSClient().sendMessage(params).promise();
                 console.log(
-                  "Message successfully sent: " + JSON.stringify(data.MessageId)
+                    "Message successfully sent: " + JSON.stringify(data.MessageId)
                 );
-                messageId= data.MessageId;
+                messageId = data.MessageId;
             } catch (err) {
                 console.log("Error: could not send message to the queue: " + err);
                 return sendResponse(500, { message: "error: Sorry, couldn't take request, please try again" });
@@ -68,7 +68,7 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
             return sendResponse(200, { message: "success: Request taken with messageId: " + messageId });
         } catch (err) {
             console.log(err);
-            return sendResponse(400, { message: 'error: Invalid object schema , expected {customerName: "name", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt" }' });
+            return sendResponse(400, { message: 'error: Invalid object schema , expected {customerName: "name", adminUsers: ["test@test.com"], tier: "Pro", customerRegion: "Frankfurt" , productName: "WxHorizon",  devices: [{deviceType: "Ground Cast", deviceSerial: "GC-12345"}}' });
         }
     }
 }
